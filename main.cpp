@@ -8,9 +8,9 @@ std::vector<std::pair<int, int>> train_data = {
 // y = mx + c
 
 float rand_float(void) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<float> dist(0.f, 1.f);
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  static std::uniform_real_distribution<float> dist(0.f, 1.f);
   return dist(gen);
 }
 
