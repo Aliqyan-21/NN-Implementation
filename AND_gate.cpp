@@ -2,11 +2,14 @@
 #include <iostream>
 #include <random>
 
-// AND gate
+// OR gate
 std::array<std::array<int, 3>, 4> train_data = {
-    {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 1}}};
+    {{0, 0, 0}, {1, 0, 1}, {0, 1, 1}, {1, 1, 1}}};
 
 const size_t data_size = train_data.size();
+
+const float eps = 1e-1;
+const float learning_rate = 1e-1;
 
 float rand_float(float a, float b) {
   static std::random_device rd;
@@ -29,15 +32,8 @@ float loss(float m1, float m2, float bias) {
   return result / data_size;
 }
 
-int main(void) {
-  float m1 = rand_float(0, 1);
-  float m2 = rand_float(0, 1);
-  float bias = rand_float(0, 1);
-
-  float eps = 1e-1;
-  float learning_rate = 1e-1;
-
-  for (int i = 0; i < 1000 * 1000; i++) {
+void gradient_descent(int epochs, float &m1, float &m2, float &bias) {
+  for (int i = 0; i < epochs; i++) {
     float l = loss(m1, m2, bias);
     // std::cout << l << std::endl;
     float d_m1 = (loss(m1 + eps, m2, bias) - l) / eps;
@@ -47,11 +43,14 @@ int main(void) {
     m2 -= learning_rate * d_m2;
     bias -= learning_rate * d_bias;
   }
+}
 
-  // std::cout << "m1: " << m1 << " " << "m2: " << m2
-  //           << " "
-  //              "b: "
-  //           << bias << "loss: " << loss(m1, m2, bias) << std::endl;
+int main(void) {
+  float m1 = rand_float(0, 1);
+  float m2 = rand_float(0, 1);
+  float bias = rand_float(0, 1);
+
+  gradient_descent(10000, m1, m2, bias);
 
   std::cout << "Output: " << std::endl;
 
