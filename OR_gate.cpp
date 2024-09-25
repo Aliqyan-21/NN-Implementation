@@ -10,7 +10,7 @@ const size_t data_size = train_data.size();
 
 float rand_float(float a, float b) {
   static std::random_device rd;
-  static std::mt19937 gen(101);
+  static std::mt19937 gen(rd());
   std::uniform_real_distribution<float> dist(a, b);
   return dist(gen);
 }
@@ -47,7 +47,20 @@ int main(void) {
     m2 -= learning_rate * d_m2;
     bias -= learning_rate * d_bias;
   }
-  std::cout << loss(m1, m2, bias) << std::endl;
+
+  // std::cout << "m1: " << m1 << " " << "m2: " << m2
+  //           << " "
+  //              "b: "
+  //           << bias << "loss: " << loss(m1, m2, bias) << std::endl;
+
+  std::cout << "Output: " << std::endl;
+
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 2; j++) {
+      std::cout << i << " | " << j << " = " << sigmoidf(i * m1 + j * m2 + bias)
+                << std::endl;
+    }
+  }
 
   return 0;
 }
