@@ -27,6 +27,7 @@ struct Xor {
 };
 
 const float eps = 1e-1;
+const float learning_rate = 1e-1;
 
 float rand_float() {
   static std::random_device rd;
@@ -134,10 +135,33 @@ Xor finite_difference(Xor &m) {
   return g;
 }
 
+Xor train_model(Xor m, Xor g) {
+  m.or_m1 -= learning_rate * g.or_m1;
+  m.or_m2 -= learning_rate * g.or_m2;
+  m.or_b -= learning_rate * g.or_b;
+  m.nand_m1 -= learning_rate * g.nand_m1;
+  m.nand_m2 -= learning_rate * g.nand_m2;
+  m.nand_b -= learning_rate * g.nand_b;
+  m.and_m1 -= learning_rate * g.and_m1;
+  m.and_m2 -= learning_rate * g.and_m2;
+  m.and_b -= learning_rate * g.and_b;
+  return m;
+}
+
 int main(void) {
   Xor m = rand_xor();
 
-  Xor g = finite_difference(m);
+  for (int i = 0; i < 100 * 1000; i++) {
+    Xor g = finite_difference(m);
+    m = train_model(m, g);
+    std::cout << loss(m) << std::endl;
+  }
+
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 2; j++) {
+      std::cout << i << " ^ " << j << " = " << forward(m, i, j) << std::endl;
+    }
+  }
 
   return 0;
 }
