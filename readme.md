@@ -1,5 +1,7 @@
 # Logic Gates trained with NN
 
+simple implementation of neural network or perceptron in cpp. To learn about them how they work under the hood and to learn how to implement them in cpp.
+
 #### Some Terms
 
 - ##### Perceptron - A single neuron
